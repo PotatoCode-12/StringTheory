@@ -1,0 +1,73 @@
+import math
+from scipy.integrate import quad
+import numpy as np 
+from sympy import symbols, diff,integrate, Function, Derivative, summation, oo, ln
+import variables
+import constants
+
+if variables.xa(variables.pos) == variables.tau:
+    if diff(variables.GWorldSheetMetric(variables.sigma, variables.sigma), variables.sigma) == 0:
+        if math.det(variables.GWorldSheetMetric(variables.a, variables.b)) == -1:
+            variables.fp(np.diff(variables.sigmap)) == variables.f(np.diff(variables.sigma))
+            diff(variables.GWorldSheetMetricb(variables.sigma, variables.sigma), variables.sigma) == 0
+if variables.stringtype == "closed":
+    variables.sigmap == variables.sigma +variables.s(variables.tau) % variables.l
+    variables.GWorldSheetMetricb(variables.tau, variables.sigma, variables.tau, 0) == 0
+    variables.sigmap == variables.sigma + variables.s % variables.l
+
+#gauge fixing 84
+integrate(variables.brackets(diff(variables.X) * diff(variables.g))/(variables.vb('diff x weyl')) * math.exp(-variables.S)) == variables.Z
+variables.gbf(variables.a*variables.b, variables.sigma) == variables.hat(variables.gbf(variables.a*variables.b, variables.sigma))
+variables.hat(variables.gbf(variables.a*variables.b, variables.sigma)) == variables.deltab(variables.a*variables.b)
+variables.hat(variables.gbf(variables.a*variables.b, variables.sigma)) == math.exp(variables.brackets(2*variables.omegasf(variables.sigma))) * variables.deltab(variables.a*variables.b) #conformal
+variables.gp**(1/2) * variables.Rp == variables.g**1.2 *(variables.R - 2*variables.Delta**(2) * variables.omegas) #ricci scalar
+variables.Rb(variables.a,variables.b, variables.c, variables.d) == 1/2(variables.gb(variables.a, variables.c) * variables.gb(variables.b, variables.d) - variables.gb(variables.a, variables.d) * variables.gb(variables.b, variables.c))*variables.R # implication of Riemann tensor
+variables.zp == variables.sigmap1 + variables.i * variables.sigmap2 == variables.f(variables.z)
+
+variables.Tb(variables.z, variables.zl) == variables.ab(variables.D1)/2 * variables.gb(variables.z, variables.zl) * variables.R # 92
+variables.Deltaa(variables.zl) * variables.Tb(variables.zl, variables.z) == variables.ab(variables.D1)/2 * variables.Deltaa(variables.zl) * (variables.gb(variables.z, variables.zl) * variables.R) == variables.ab(variables.D1)/2 * diff(variables.R, variables.z)
+variables.Deltaa(variables.z) * variables.Tb(variables.z, variables.z) == -variables.Deltaa(variables.zl) * variables.Tb(variables.zl, variables.z) == - variables.ab(variables.D1)/2 * diff(variables.R, variables.z)
+variables.ab(variables.D1) == diff(variables.Deltaa(variables.D2), variables.z) * variables.delta * variables.omegas == 4 * variables.ab(variables.D1) * diff(diff(variables.delta*variables.omegas , variables.zl), 2, variables.z) # for righthanded metric
+# conformals 93.16
+variables.R == -2 * math.exp(-2 * variables.omegas) * diff(diff(variables.omegas, variables.a), variables.a)
+variables.Deltaa(variables.D2) == math.exp(-2*variables.omegas) * diff(diff(1, variables.a), variables.a) # double check double diff
+variables.deltab(variables.W) * variables.Z * variables.brackets(math.exp(2*variables.omegas) * variables.delta) == variables.ab(variables.D1)/math.pi * variables.Z * variables.brackets(math.exp(2*variables.omegas) * variables.delta) * integrate(variables.d2sigma * variables.delta * variables.omegas * diff(diff(variables.omegas, variables.a), variables.a)) # Weyl variation
+variables.Z * variables.brackets(math.exp(variables.omegas * 2) * variables.delta) == variables.Z * variables.brackets(variables.delta) * math.exp(-variables.ab(variables.D1)/(2*math.pi) * integrate(variables.d2sigma * diff(variables.omegas, variables.a) * diff(variables.omegas, variables.a)))
+variables.Z * variables.bracket(variables.g) == variables.Z * variables.brackets(variables.delta) * math.exp(variables.ab(variables.D1)/(8*math.pi) * integrate(variables.d2sigma * integrate(variables.d2sigmap * variables.g**(1/2) * variables.Rf(variables.sigma) * variables.Gf(variables.sigma, variables.sigmap) * variables.g**(1/2) * variables.Rf(variables.sigmap)))) # 94.19
+variables.gf(variables.sigma) **(1/2) * variables.Deltaa(variables.D2) * variables.Gf(variables.sigma, variables.sigmap) == variables.deltaaf(variables.D2, variables.sigma-variables.sigma)
+ln((variables.Z * variables.brackets(variables.delta + variables.h)) / (variables.Z * variables.brackets(variables.delta))) == variables.ab(variables.D1)/(8*math.pi**2) * integrate(variables.d2z * integrate(variables.d2zp * (diff(ln(variables.z-variables.zp)**2), 2, variables.z) * variables.hbf(variables.zl* variables.zl, variables.z, variables.zl) * diff(variables.hbf(variables.zl * variables.zl, variables.zp, variables.zpl), 2, variables.zp))) == -3*variables.ab(variables.D1)/(4*math.pi**2) * integrate(variables.d2z * integrate(variables.d2zp * (variables.hbf(variables.zl * variables.zl, variables.z, variables.zl) * variables.hbf(variables.zl * variables.zl, variables.zp, variables.zpl))/(variables.z - variables.zp)**4))
+# charges
+variables.c == variables.ca(variables.X) + variables.ca(variables.g) == variables.D-26
+
+#185.2, normalized Hermitian
+variables.Trf(variables.lamdaa(variables.a) * variables.lamdaa(variables.b)) == variables.deltaa(variables.a * variables.b)
+variables.dirac(variables.N, variables.k, variables.a) == summation(variables.dirac(variables.N, variables.k, variables.i  *variables.j) * variables.lamdaab(variables.a, variables.i * variables.j), ((variables.i, variables.j), 1, variables.n))
+variables.Sb(variables.Db(2)) * (variables.semigroup(variables.kb(1), variables.ab(1)), variables.semigroup(variables.kb(2), variables.ab(2)), variables.semigroup(variables.kb(3), variables.ab(3))) == (variables.i * variables.gb(variables.o))/(variables.SlopeRegge) * (2 * math.pi)**26 * variables.deltaa(26) * summation(variables.kb(variables.i), variables.i) * variables.Trf(variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(3)) + variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(3)) * variables.lamdaa(variables.ab(2)))
+variables.Sb(variables.Db(2)) * (variables.semigroup(variables.kb(1), variables.ab(1)), variables.semigroup(variables.kb(2), variables.ab(2),), variables.semigroup(variables.kb(3), variables.ab(3)), variables.semigroup(variables.kb(4), variables.ab(4))) == (variables.i * variables.gab(2, variables.o))/variables.SlopeRegge * (2 * math.pi)**26 * variables.deltaa(26) * summation(variables.kb(variables.i), variables.i) * variables.brackets(variables.Trf(variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(4)) * variables.lamdaa(variables.ab(3)) + variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(3)) * variables.lamdaa(variables.ab(4)) * variables.lamdaa(variables.ab(2))) * variables.Bf(-variables.alphabf(variables.o, variables.s), -variables.alphabf(variables.o, variables.t)) + variables.Trf(variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(3)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(4)) + variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(4)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(3))) * variables.Bf(-variables.alphabf(variables.o, variables.t), -variables.alphabf(variables.o, variables.u)) + variables.Trf(variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(3)) * variables.lamdaa(variables.ab(4)) + variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(4)) * variables.lamdaa(variables.ab(3)) * variables.lamdaa(variables.ab(2))) * variables.Bf(-variables.alphabf(variables.o, variables.s), -variables.alphabf(variables.o, variables.u)))
+variables.Trf(variables.A * variables.lamdaa(variables.a)) * variables.Trf(variables.B * variables.lamdaa(variables.a)) == variables.Trf(variables.A * variables.B)
+variables.Sb(variables.Db(2)) * (variables.semigroup(variables.kb(1), variables.ab(1)), variables.semigroup(variables.kb(2), variables.ab(2)), variables.semigroup(variables.kb(3), variables.ab(3))) == - variables.i * variables.gbp(variables.o) * variables.gab(2, variables.o) * variables.ea(-variables.lamda) * variables.eb(1, variables.mu) * variables.with_swap(variables.bracketb(variables.point(variables.ca(1) * diff(variables.xa(variables.mu), variables.tau)  * variables.ea(variables.i * variables.kb(1) * variables.X)) * variables.point(variables.ca(1) * variables.eaf(variables.i * variables.kb(2) * variables.X, variables.yb(2))), variables.Db(2)) * variables.Trf(variables.lamdaa(variables.ab(1)) * variables.lamdaa(variables.ab(2)) * variables.lamdaa(variables.ab(3))), (variables.kb(2), variables.ab(2), (variables.kb(3), variables.ab(3))))
+variables.bracketb(variables.point(diff(variables.xa(variables.mu), variables.tau) * variables.eaf(variables.i * variables.kb(1) * variables.X, variables.yb(1))) * variables.point(variables.eaf(variables.I * variables.kb(2) * variables.X, variables.yb(2))) * variables.point(variables.eaf(variables.i * variables.kb(3) * variables.X), variables.yb(3)), variables.Db(2)) == -2 * variables.i * variables.SlopeRegge * ((variables.kab(variables.mu, 2))/(variables.yb(12)) + (variables.kab(variables.mu, 3))/(variables.yb(13))) * variables.i * variables.Cab(variables.X, variables.Db(2)) * (2 * math.pi)**26 * variables.deltaa(26) * summation(variables.kb(variables.i), variables.i) * variables.bracketla(variables.yb(12), 2 * variables.SlopeRegge * variables.kb(1) * variables.kb(2)) * variables.bracketla(variables.yb(13), 2 * variables.SlopeRegge * variables.kb(1) * variables.kb(3)) * variables.bracketla(variables.yb(23), 2 * variables.SlopeRegge * variables.kb(2) * variables.kb(3))
+variables.Sb(variables.Db(2)) * (variables.semigroup(variables.kb(1), variables.ab(1), variables.eb(1)), variables.semigroup(variables.kb(2), variables.ab(2)), variables.semigroup(variables.kb(3), variables.ab(3))) == - variables.i * variables.gbp(variables.o) * variables.eb(1) * variables.kb(23) * (2 * math.pi)**26 * variables.deltaa(26) * summation(variables.kb(variables.i), variables.i) * variables.Trf(variables.lamdaa(variables.ab(1)) * variables.brackets(variables.lamdaa(variables.ab(2)), variables.lamdaa(variables.ab(3))))
+variables.gbp(variables.o) == (2 * variables.SlopeRegge)**(-1/2) * variables.gb(variables.o)
+variables.Sb(variables.Db(2)) * (variables.semigroup(variables.kb(1), variables.ab(1), variables.eb(1)), variables.semigroup(variables.kb(2), variables.ab(2), variables.eb(2)), variables.semigroup(variables.kb(3), variables.ab(3), variables.eb(3))) == variables.i * variables.gbp(variables.o) * (2 * math.pi)**26 * variables.deltaa(26) * summation(variables.kb(variables.i), variables.i) * (variables.eb(1) * variables.kb(23) * variables.eb(2) * variables.eb(3) + variables.eb(2) * variables.kb(31) * variables.eb(3) * variables.eb(1) + variables.eb(3) * variables.kb(12) * variables.eb(1) * variables.eb(2) + variables.SlopeRegge/2 * variables.eb(1) * variables.kb(23) * variables.eb(2) * variables.kb(31) * variables.eb(3) * variables.kb(12)) * variables.Trf(variables.lamdaa(variables.ab(1)) * variables.brackets(variables.lamdaa(variables.ab(2), variables.lamdaa(variables.ab(3)))))
+variables.SB == 1/(variables.gbap(variables.o, 2)) * integrate(diff(variables.x, 26)) * variables.brackets(-1/2 * (variables.Trf(variables.Db(variables.mu) * variables.phis * variables.Da(variables.mu) * variables.phis)) + 1/(2 * variables.SlopeRegge) * variables.Trf(variables.phisa(2)) + (2**(1/2))/(3 * variables.SlopeRegge**(1/2)) * variables.Trf(variables.phisa(3)) - 1/4 * variables.Trf(variables.Fb(variables.mu * variables.v) * variables.Fa(variables.mu * variables.v)))
+# general symetry 189.18
+variables.lamdaa(variables.a) == variables.U * variables.lamdaa(variables.a) * variables.dagger(variables.U)
+# unoriented string 189.19
+variables.omega * variables.alphaab(variables.mu, variables.n) * variables.omegaa(-1) == (-1)**(variables.n) * variables.alphaab(variables.mu, variables.n) # open string
+variables.omega * variables.alphaab(variables.mu, variables.n) * variables.omegaa(-1) == variables.alphaabtilde(variables.mu, variables.n) # closed string
+variables.omega * variables.dirac(variables.N, variables.k) == variables.omegabs(variables.N) * variables.dirac(variables.N, variables.k)
+variables.omegabs(variables.N) == (-1)**(1 + variables.SlopeRegge * variables.m**2)
+variables.omega * variables.dirac(variables.N, variables.k, variables.i * variables.j) == variables.omegabs(variables.N) * variables.dirac(variables.N, variables.k, variables.j * variables.i)
+variables.omega * variables.dirac(variables.N, variables.k, variables.a) == variables.omegabs(variables.N) * variables.sa(variables.a) * variables.dirac(variables.N, variables.k, variables.a)
+# check unoriented spectrum, 190.24
+variables.omegab(variables.gamma) * variables.dirac(variables.N, variables.k, variables.i * variables.j) == variables.omegabs(variables.N) * variables.gammab(variables.j * variables.jp) * variables.dirac(variables.N, variables.k, variables.jp * variables.ip) * variables.gammaab(-2, variables.ip * variables.i)
+variables.omegaab(2, variables.gamma) * variables.dirac(variables.N, variables.k, variables.i * variables.j) == variables.bracketb((variables.gamma(variables.T))**(-1) * variables.gamma, variables.i * variables.ip) * variables.dirac(variables.N, variables.k, variables.ip * variables.jp) * variables.holderb(variables.gammaa(-1) * variables.gammaa(variables.T), variables.jp * variables.j)
+variables.gammaa(variables.T) == variables.posneg * variables.gamma
+variables.diracp(variables.N, variables.k, variables.i * variables.j) == variables.Uab(-1, variables.i * variables.ip) * variables.dirac(variables.N, variables.k, variables.ip * variables.jp) * variables.Ub(variables.jp * variables.j)
+variables.gammap == variables.Ua(variables.T) * variables.gamma * variables.U 
+variables.gamma == variables.M == variables.i * np.array([[0, variables.I],
+                                                        [-variables.I, 0]])
+variables.M (variables.lamdaa(variables.a))**(variables.T) * variables.M == -variables.lamdaa(variables.a) # Sloperegge * m**2 even, 191.31
+variables.M (variables.lamdaa(variables.a))**(variables.T) * variables.M == +variables.lamdaa(variables.a) # Sloperegge * m**2 odd, 191.31
+variables.lamda == (variables.gammaa(variables.T))**(-1) * variables.gamma * variables.lamda * variables.gammaa(-1) * variables.gammaa(variables.T) == variables.lamda 
